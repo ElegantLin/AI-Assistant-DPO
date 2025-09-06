@@ -97,6 +97,9 @@ class PairwiseDatasetProcessor(DatasetProcessor):
             model_inputs["videos"].append(examples["_videos"][i])
             model_inputs["audios"].append(examples["_audios"][i])
 
+            if "label_smoothing" in examples:
+                model_inputs["label_smoothing"].append(examples["label_smoothing"][i])
+
         return model_inputs
 
     def print_data_example(self, example: dict[str, list[int]]) -> None:

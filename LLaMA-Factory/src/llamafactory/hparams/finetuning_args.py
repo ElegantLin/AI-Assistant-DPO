@@ -180,7 +180,7 @@ class RLHFArguments:
         default=0.0,
         metadata={"help": "The Binary Classifier Optimization coefficient in DPO training."},
     )
-    pref_loss: Literal["sigmoid", "hinge", "ipo", "kto_pair", "orpo", "simpo"] = field(
+    pref_loss: Literal["sigmoid", "hinge", "ipo", "kto_pair", "orpo", "simpo", "robust"] = field(
         default="sigmoid",
         metadata={"help": "The type of DPO loss to use."},
     )
@@ -543,7 +543,7 @@ class FinetuningArguments(
         if self.stage == "ppo" and self.reward_model_type == "oft" and self.finetuning_type != "oft":
             raise ValueError("`reward_model_type` cannot be oft for Freeze/Full PPO training.")
 
-        if self.stage == "dpo" and self.pref_loss != "sigmoid" and self.dpo_label_smoothing > 1e-6:
+        if self.stage == "dpo" and self.pref_loss not in ["sigmoid", "robust"] and self.dpo_label_smoothing > 1e-6:
             raise ValueError("`dpo_label_smoothing` is only valid for sigmoid loss function.")
 
         if self.use_llama_pro and self.finetuning_type == "full":

@@ -224,6 +224,8 @@ class SharegptDatasetConverter(DatasetConverter):
             "_videos": self._find_medias(example[self.dataset_attr.videos]) if self.dataset_attr.videos else None,
             "_audios": self._find_medias(example[self.dataset_attr.audios]) if self.dataset_attr.audios else None,
         }
+        if 'label_smoothing' in example:
+            output['label_smoothing'] = example['label_smoothing']
         return output
 
 

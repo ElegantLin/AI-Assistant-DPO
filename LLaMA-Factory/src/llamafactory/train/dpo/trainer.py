@@ -182,6 +182,7 @@ class CustomDPOTrainer(DPOTrainer):
         policy_rejected_logps: "torch.Tensor",
         reference_chosen_logps: Optional["torch.Tensor"],
         reference_rejected_logps: Optional["torch.Tensor"],
+        label_smoothing: Optional["torch.Tensor"] = None,
     ) -> tuple["torch.Tensor", "torch.Tensor", "torch.Tensor"]:
         r"""Compute loss for preference learning."""
         if not self.finetuning_args.use_ref_model:
@@ -196,7 +197,7 @@ class CustomDPOTrainer(DPOTrainer):
             rejected_rewards = self.beta * policy_rejected_logps.to(self.accelerator.device).detach()
         else:
             losses, chosen_rewards, rejected_rewards = self.dpo_loss(
-                policy_chosen_logps, policy_rejected_logps, reference_chosen_logps, reference_rejected_logps
+                policy_chosen_logps, policy_rejected_logps, reference_chosen_logps, reference_rejected_logps, label_smoothing,
             )
 
             if self.bco_gemma > 1e-6:
@@ -275,11 +276,16 @@ class CustomDPOTrainer(DPOTrainer):
         ) = self.concatenated_forward(model, batch)
 
         reference_chosen_logps, reference_rejected_logps = self.compute_reference_log_probs(model, batch)
+        label_smoothing = batch.get("label_smoothing", None)
+        if label_smoothing is not None:
+            batch_size = batch["input_ids"].size(0) // 2
+            label_smoothing = label_smoothing[:batch_size]
         losses, chosen_rewards, rejected_rewards = self.compute_preference_loss(
             policy_chosen_logps,
             policy_rejected_logps,
             reference_chosen_logps,
             reference_rejected_logps,
+            label_smoothing,
         )
         sft_loss = -policy_chosen_logps_avg
         if self.ftx_gamma > 1e-6:

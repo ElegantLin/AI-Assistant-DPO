@@ -19,6 +19,7 @@ from typing import TYPE_CHECKING, Any, Optional
 import torch
 import torch.distributed as dist
 from transformers import EarlyStoppingCallback, PreTrainedModel
+import json
 
 from ..data import get_template_and_fix_tokenizer
 from ..extras import logging
@@ -51,6 +52,10 @@ logger = logging.get_logger(__name__)
 
 def _training_function(config: dict[str, Any]) -> None:
     args = config.get("args")
+    os.makedirs(args['output_dir'], exist_ok=True)
+    with open(os.path.join(args['output_dir'], "args.json"), "w", encoding="utf-8") as f:
+        json.dump(args, f, indent=2)
+
     callbacks: list[Any] = config.get("callbacks")
     model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
 
