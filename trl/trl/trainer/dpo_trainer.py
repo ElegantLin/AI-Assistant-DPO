@@ -1049,6 +1049,7 @@ class DPOTrainer(Trainer):
         policy_rejected_logps: torch.FloatTensor,
         reference_chosen_logps: torch.FloatTensor,
         reference_rejected_logps: torch.FloatTensor,
+        label_smoothing: torch.FloatTensor = None,
     ) -> Tuple[torch.FloatTensor, torch.FloatTensor, torch.FloatTensor]:
         """Compute the DPO loss for a batch of policy and reference model log probabilities.
 
@@ -1105,15 +1106,27 @@ class DPOTrainer(Trainer):
         # We ignore the reference model as beta -> 0. The label_smoothing parameter encodes our uncertainty about the labels and
         # calculates a conservative DPO loss.
         if self.loss_type == "sigmoid":
-            losses = (
-                -F.logsigmoid(self.beta * logits) * (1 - self.label_smoothing)
-                - F.logsigmoid(-self.beta * logits) * self.label_smoothing
-            )
+            if label_smoothing is not None:
+                losses = (
+                    -F.logsigmoid(self.beta * logits) * (1 - label_smoothing)
+                    - F.logsigmoid(-self.beta * logits) * label_smoothing
+                )
+            else:
+                losses = (
+                    -F.logsigmoid(self.beta * logits) * (1 - self.label_smoothing)
+                    - F.logsigmoid(-self.beta * logits) * self.label_smoothing
+                )
         elif self.loss_type == "robust":
-            losses = (
-                -F.logsigmoid(self.beta * logits) * (1 - self.label_smoothing)
-                + F.logsigmoid(-self.beta * logits) * self.label_smoothing
-            ) / (1 - 2 * self.label_smoothing)
+            if label_smoothing is not None:
+                losses = (
+                    -F.logsigmoid(self.beta * logits) * (1 - label_smoothing)
+                    + F.logsigmoid(-self.beta * logits) * label_smoothing
+                ) / (1 - 2 * label_smoothing)
+            else:
+                losses = (
+                    -F.logsigmoid(self.beta * logits) * (1 - self.label_smoothing)
+                    + F.logsigmoid(-self.beta * logits) * self.label_smoothing
+                ) / (1 - 2 * self.label_smoothing)
         elif self.loss_type == "exo_pair":
             # eqn (16) of the EXO paper: https://arxiv.org/pdf/2402.00856
             import math
