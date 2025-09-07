@@ -278,6 +278,14 @@ class LogCallback(TrainerCallback):
             total_steps=self.max_steps,
             loss=state.log_history[-1].get("loss"),
             eval_loss=state.log_history[-1].get("eval_loss"),
+            eval_chosen_rewards=state.log_history[-1].get("eval_rewards/chosen"),
+            eval_rejected_rewards=state.log_history[-1].get("eval_rewards/rejected"),
+            eval_rewards_accuracies=state.log_history[-1].get("eval_rewards/accuracies"),
+            eval_rewards_margins=state.log_history[-1].get("eval_rewards/margins"),
+            eval_logps_chosen=state.log_history[-1].get("eval_logps/chosen"),
+            eval_logps_rejected=state.log_history[-1].get("eval_logps/rejected"),
+            eval_logits_chosen=state.log_history[-1].get("eval_logits/chosen"),
+            eval_logits_rejected=state.log_history[-1].get("eval_logits/rejected"),
             predict_loss=state.log_history[-1].get("predict_loss"),
             reward=state.log_history[-1].get("reward"),
             accuracy=state.log_history[-1].get("rewards/accuracies"),
@@ -306,6 +314,11 @@ class LogCallback(TrainerCallback):
             logger.info_rank0("{" + log_str + "}")
 
         if self.thread_pool is not None:
+            logs['train_eval'] = 'train'
+            for key, value in logs.items():
+                if key.startswith("eval_"):
+                    logs['train_eval'] = 'eval'
+                    break
             self.thread_pool.submit(self._write_log, args.output_dir, logs)
 
     @override
