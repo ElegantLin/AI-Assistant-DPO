@@ -36,7 +36,7 @@ class DataArguments:
         metadata={"help": "The name of dataset(s) to use for evaluation. Use commas to separate multiple datasets."},
     )
     dataset_dir: str = field(
-        default="data",
+        default="LLaMA-Factory/data",
         metadata={"help": "Path to the folder containing the datasets."},
     )
     media_dir: Optional[str] = field(
