@@ -1,0 +1,47 @@
+### model
+model_name_or_path: Qwen/Qwen2.5-0.5B-Instruct
+trust_remote_code: true
+
+### method
+stage: dpo
+do_train: true
+finetuning_type: full
+deepspeed: LLaMA-Factory/examples/deepspeed/ds_z3_config.json  # choices: [ds_z0_config.json, ds_z2_config.json, ds_z3_config.json]
+pref_loss: robust
+
+### dataset
+dataset: dpo_train_with_scores_values_label_smoothing
+template: qwen
+cutoff_len: 2048
+overwrite_cache: true
+preprocessing_num_workers: 16
+dataloader_num_workers: 4
+
+### output
+output_dir: saves/qwen2_5-0_5b/full/dpo_train_ai_flipped_robust_values_label_smoothing
+logging_steps: 1
+save_steps: -1
+plot_loss: true
+overwrite_output_dir: true
+save_only_model: false
+report_to: wandb  # choices: [none, wandb, tensorboard, swanlab, mlflow]
+run_name: qwen2_5-0_5b-full-dpo-train-ai-flipped-robust-values-label-smoothing
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+learning_rate: 5.0e-6
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+ddp_timeout: 180000000
+resume_from_checkpoint: null
+max_steps: 1
+
+### eval
+eval_dataset: dpo_eval, dpo_eval_chosen_higher, dpo_eval_rejected_higher
+# val_size: 0.1
+per_device_eval_batch_size: 2
+eval_strategy: steps
+eval_steps: 500
