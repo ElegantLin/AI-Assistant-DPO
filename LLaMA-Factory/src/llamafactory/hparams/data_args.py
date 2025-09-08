@@ -100,7 +100,7 @@ class DataArguments:
         metadata={"help": "Size of the validation set, should be an integer or a float in range `[0,1)`."},
     )
     eval_on_each_dataset: bool = field(
-        default=False,
+        default=True,
         metadata={"help": "Whether or not to evaluate on each dataset separately."},
     )
     packing: Optional[bool] = field(
