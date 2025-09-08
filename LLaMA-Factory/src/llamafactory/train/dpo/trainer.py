@@ -196,7 +196,7 @@ class CustomDPOTrainer(DPOTrainer):
             chosen_rewards = self.beta * policy_chosen_logps.to(self.accelerator.device).detach()
             rejected_rewards = self.beta * policy_rejected_logps.to(self.accelerator.device).detach()
         else:
-            losses, chosen_rewards, rejected_rewards = self.dpo_loss(
+            losses, chosen_rewards, rejected_rewards, losses_ori = self.dpo_loss(
                 policy_chosen_logps, policy_rejected_logps, reference_chosen_logps, reference_rejected_logps, label_smoothing,
             )
 
@@ -206,7 +206,7 @@ class CustomDPOTrainer(DPOTrainer):
                 )
                 losses += bco_losses * self.bco_gemma
 
-        return losses, chosen_rewards, rejected_rewards
+        return losses, chosen_rewards, rejected_rewards, losses_ori
 
     @override
     def concatenated_forward(
@@ -280,7 +280,7 @@ class CustomDPOTrainer(DPOTrainer):
         if label_smoothing is not None:
             batch_size = batch["input_ids"].size(0) // 2
             label_smoothing = label_smoothing[:batch_size]
-        losses, chosen_rewards, rejected_rewards = self.compute_preference_loss(
+        losses, chosen_rewards, rejected_rewards, losses_ori = self.compute_preference_loss(
             policy_chosen_logps,
             policy_rejected_logps,
             reference_chosen_logps,
@@ -303,6 +303,7 @@ class CustomDPOTrainer(DPOTrainer):
         metrics[f"{prefix}logps/rejected"] = policy_rejected_logps.mean().item()
         metrics[f"{prefix}logits/chosen"] = policy_chosen_logits.mean().item()
         metrics[f"{prefix}logits/rejected"] = policy_rejected_logits.mean().item()
+        metrics[f"{prefix}losses_ori"] = losses_ori.mean().item()
         if self.loss_type == "orpo":
             metrics[f"{prefix}sft_loss"] = sft_loss.mean().item()
             metrics[f"{prefix}odds_ratio_loss"] = ((losses - sft_loss) / self.beta).mean().item()

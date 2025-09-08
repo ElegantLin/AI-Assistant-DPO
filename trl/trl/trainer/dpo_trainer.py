@@ -1105,16 +1105,25 @@ class DPOTrainer(Trainer):
         # The beta is a temperature parameter for the DPO loss, typically something in the range of 0.1 to 0.5.
         # We ignore the reference model as beta -> 0. The label_smoothing parameter encodes our uncertainty about the labels and
         # calculates a conservative DPO loss.
+        losses_ori = None
         if self.loss_type == "sigmoid":
             if label_smoothing is not None:
                 losses = (
                     -F.logsigmoid(self.beta * logits) * (1 - label_smoothing)
                     - F.logsigmoid(-self.beta * logits) * label_smoothing
                 )
+                losses_ori = (
+                    -F.logsigmoid(self.beta * logits) * (1 - self.label_smoothing)
+                    - F.logsigmoid(-self.beta * logits) *  self.label_smoothing
+                )
             else:
                 losses = (
                     -F.logsigmoid(self.beta * logits) * (1 - self.label_smoothing)
                     - F.logsigmoid(-self.beta * logits) * self.label_smoothing
+                )
+                losses_ori = (
+                    -F.logsigmoid(self.beta * logits) * (1 - 0.0)
+                    - F.logsigmoid(-self.beta * logits) * 0.0
                 )
         elif self.loss_type == "robust":
             if label_smoothing is not None:
@@ -1122,11 +1131,19 @@ class DPOTrainer(Trainer):
                     -F.logsigmoid(self.beta * logits) * (1 - label_smoothing)
                     + F.logsigmoid(-self.beta * logits) * label_smoothing
                 ) / (1 - 2 * label_smoothing)
+                losses_ori = (
+                    -F.logsigmoid(self.beta * logits) * (1 - self.label_smoothing)
+                    + F.logsigmoid(-self.beta * logits) * self.label_smoothing
+                ) / (1 - 2 * self.label_smoothing)
             else:
                 losses = (
                     -F.logsigmoid(self.beta * logits) * (1 - self.label_smoothing)
                     + F.logsigmoid(-self.beta * logits) * self.label_smoothing
                 ) / (1 - 2 * self.label_smoothing)
+                losses_ori = (
+                    -F.logsigmoid(self.beta * logits) * (1 - 0.0)
+                    + F.logsigmoid(-self.beta * logits) * 0.0
+                ) / (1 - 2 * 0.0)
         elif self.loss_type == "exo_pair":
             # eqn (16) of the EXO paper: https://arxiv.org/pdf/2402.00856
             import math
@@ -1215,7 +1232,7 @@ class DPOTrainer(Trainer):
             ).detach()
         )
 
-        return losses, chosen_rewards, rejected_rewards
+        return losses, chosen_rewards, rejected_rewards, losses_ori
 
     @staticmethod
     def get_batch_logps(
