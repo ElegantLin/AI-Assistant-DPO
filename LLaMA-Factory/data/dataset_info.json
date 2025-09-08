@@ -557,8 +557,8 @@
       "label_smoothing": "label_smoothing"
     }
   },
-  "dpo_train_with_scores_value_label_smoothing": {
-    "file_name": "dpo_train_with_scores_value_label_smoothing.json",
+  "dpo_train_with_scores_values_label_smoothing": {
+    "file_name": "dpo_train_with_scores_values_label_smoothing.json",
     "ranking": true,
     "formatting": "sharegpt",
     "columns": {
@@ -570,6 +570,26 @@
   },
   "dpo_eval": {
     "file_name": "dpo_eval.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "dpo_eval_chosen_higher": {
+    "file_name": "dpo_eval_chosen_higher.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "dpo_eval_rejected_higher": {
+    "file_name": "dpo_eval_rejected_higher.json",
     "ranking": true,
     "formatting": "sharegpt",
     "columns": {
