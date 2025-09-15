@@ -632,8 +632,8 @@
       "label_smoothing": "label_smoothing"
     }
   },
-  "dpo_train_with_scores_values_label_smoothing_range_min_1": {
-    "file_name": "dpo_train_with_scores_values_label_smoothing_range_min_1.json",
+  "dpo_train_with_scores_value_label_smoothing_range_min_1": {
+    "file_name": "dpo_train_with_scores_value_label_smoothing_range_min_1.json",
     "ranking": true,
     "formatting": "sharegpt",
     "columns": {
@@ -643,8 +643,8 @@
       "label_smoothing": "label_smoothing"
     }
   },
-  "dpo_train_with_scores_values_label_smoothing_range_min_2": {
-    "file_name": "dpo_train_with_scores_values_label_smoothing_range_min_2.json",
+  "dpo_train_with_scores_value_label_smoothing_range_min_2": {
+    "file_name": "dpo_train_with_scores_value_label_smoothing_range_min_2.json",
     "ranking": true,
     "formatting": "sharegpt",
     "columns": {
@@ -654,8 +654,8 @@
       "label_smoothing": "label_smoothing"
     }
   },
-  "dpo_train_with_scores_values_label_smoothing_range_min_3": {
-    "file_name": "dpo_train_with_scores_values_label_smoothing_range_min_3.json",
+  "dpo_train_with_scores_value_label_smoothing_range_min_3": {
+    "file_name": "dpo_train_with_scores_value_label_smoothing_range_min_3.json",
     "ranking": true,
     "formatting": "sharegpt",
     "columns": {
@@ -665,8 +665,8 @@
       "label_smoothing": "label_smoothing"
     }
   },
-  "dpo_train_with_scores_values_label_smoothing_range_min_4": {
-    "file_name": "dpo_train_with_scores_values_label_smoothing_range_min_4.json",
+  "dpo_train_with_scores_value_label_smoothing_range_min_4": {
+    "file_name": "dpo_train_with_scores_value_label_smoothing_range_min_4.json",
     "ranking": true,
     "formatting": "sharegpt",
     "columns": {
