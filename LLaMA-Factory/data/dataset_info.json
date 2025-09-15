@@ -546,6 +546,26 @@
       "rejected": "rejected"
     }
   },
+  "dpo_train_human_ai_aligned": {
+    "file_name": "dpo_train_human_ai_aligned.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "dpo_train_human_ai_not_aligned": {
+    "file_name": "dpo_train_human_ai_not_aligned.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
   "dpo_train_with_scores_percentile_label_smoothing": {
     "file_name": "dpo_train_with_scores_percentile_label_smoothing.json",
     "ranking": true,
