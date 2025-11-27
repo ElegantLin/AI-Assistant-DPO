@@ -37,7 +37,6 @@ warmup_ratio: 0.1
 bf16: true
 ddp_timeout: 180000000
 resume_from_checkpoint: null
-max_steps: 1
 
 ### eval
 eval_dataset: dpo_eval, dpo_eval_chosen_higher, dpo_eval_rejected_higher

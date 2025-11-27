@@ -10,7 +10,7 @@ deepspeed: examples/deepspeed/ds_z3_config.json  # choices: [ds_z0_config.json, 
 pref_loss: sigmoid
 
 ### dataset
-dataset: dpo_train_ai_flipped
+dataset: dpo_train_ai_flipped_data_28K
 template: qwen
 cutoff_len: 2048
 overwrite_cache: true
@@ -18,14 +18,14 @@ preprocessing_num_workers: 16
 dataloader_num_workers: 4
 
 ### output
-output_dir: saves/qwen2_5-0_5b/full/dpo_train_ai_flipped
+output_dir: saves/qwen2_5-0_5b/full/dpo_train_ai_flipped_28K
 logging_steps: 10
 save_steps: 1000
 plot_loss: true
 overwrite_output_dir: true
 save_only_model: false
 report_to: wandb  # choices: [none, wandb, tensorboard, swanlab, mlflow]
-run_name: qwen2_5-0_5b-full-dpo-train-ai-flipped
+run_name: qwen2_5-0_5b-full-dpo-train-ai-flipped-28K
 
 ### train
 per_device_train_batch_size: 1
@@ -39,8 +39,7 @@ ddp_timeout: 180000000
 resume_from_checkpoint: null
 
 ### eval
-eval_dataset: dpo_eval
-# val_size: 0.1
+eval_dataset: dpo_eval, dpo_eval_chosen_higher, dpo_eval_rejected_higher, dpo_train_with_rejected_higher_flipped, dpo_train_with_chosen_higher_20K
 per_device_eval_batch_size: 2
 eval_strategy: steps
-eval_steps: 500
+eval_steps: 200

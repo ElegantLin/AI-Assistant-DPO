@@ -6,7 +6,7 @@ trust_remote_code: true
 stage: dpo
 do_train: true
 finetuning_type: full
-deepspeed: LLaMA-Factory/examples/deepspeed/ds_z3_config.json  # choices: [ds_z0_config.json, ds_z2_config.json, ds_z3_config.json]
+deepspeed: examples/deepspeed/ds_z3_config.json  # choices: [ds_z0_config.json, ds_z2_config.json, ds_z3_config.json]
 pref_loss: robust
 
 ### dataset
@@ -18,19 +18,19 @@ preprocessing_num_workers: 16
 dataloader_num_workers: 4
 
 ### output
-output_dir: saves/qwen2_5-0_5b/full/dpo_train_ai_flipped_robust_percentile_label_smoothing
+output_dir: saves/qwen2_5-0_5b/full/test
 logging_steps: 1
 save_steps: -1
 plot_loss: true
 overwrite_output_dir: true
 save_only_model: false
-report_to: wandb  # choices: [none, wandb, tensorboard, swanlab, mlflow]
+report_to: none  # choices: [none, wandb, tensorboard, swanlab, mlflow]
 run_name: qwen2_5-0_5b-full-dpo-train-ai-flipped-robust-percentile-label-smoothing
 
 ### train
 per_device_train_batch_size: 1
 gradient_accumulation_steps: 8
-learning_rate: 5.0e-6
+learning_rate: 0.0
 num_train_epochs: 3.0
 lr_scheduler_type: cosine
 warmup_ratio: 0.1
