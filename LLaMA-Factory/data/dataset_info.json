@@ -766,6 +766,56 @@
       "rejected": "rejected"
     }
   },
+  "comparison_train": {
+    "file_name": "dpo_converted_train.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "comparison_test": {
+    "file_name": "dpo_converted_test.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "dpo_train_with_score_all_flipped_ropo_alpha": {
+    "file_name": "dpo_train_with_score_all_flipped_ropo_alpha.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "dpo_train_with_score_all_flipped": {
+    "file_name": "dpo_train_with_score_all_flipped.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "dpo_eval_with_scores": {
+    "file_name": "dpo_eval_with_scores.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
   "dpo_mix_en": {
     "hf_hub_url": "llamafactory/DPO-En-Zh-20k",
     "subset": "en",
