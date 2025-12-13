@@ -60,7 +60,7 @@ print("\nProcessing data points...")
 chosen_scores = []
 rejected_scores = []
 
-for idx, item in enumerate(tqdm(data[:100], desc="Computing scores")):
+for idx, item in enumerate(tqdm(data, desc="Computing scores")):
     # Extract prompt from conversations
     # The prompt is typically in the first conversation with "from": "human"
     prompt = ""
