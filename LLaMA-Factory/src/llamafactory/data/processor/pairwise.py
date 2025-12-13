@@ -100,6 +100,9 @@ class PairwiseDatasetProcessor(DatasetProcessor):
             if "label_smoothing" in examples:
                 model_inputs["label_smoothing"].append(examples["label_smoothing"][i])
 
+            if "ropo_alpha" in examples:
+                model_inputs["ropo_alpha"].append(examples["ropo_alpha"][i])
+
         return model_inputs
 
     def print_data_example(self, example: dict[str, list[int]]) -> None:

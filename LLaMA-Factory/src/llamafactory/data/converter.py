@@ -128,6 +128,8 @@ class AlpacaDatasetConverter(DatasetConverter):
             "_videos": self._find_medias(example[self.dataset_attr.videos]) if self.dataset_attr.videos else None,
             "_audios": self._find_medias(example[self.dataset_attr.audios]) if self.dataset_attr.audios else None,
         }
+        if 'ropo_alpha' in example:
+            output['ropo_alpha'] = example['ropo_alpha']
         return output
 
 
@@ -226,6 +228,8 @@ class SharegptDatasetConverter(DatasetConverter):
         }
         if 'label_smoothing' in example:
             output['label_smoothing'] = example['label_smoothing']
+        if 'ropo_alpha' in example:
+            output['ropo_alpha'] = example['ropo_alpha']
         return output
 
 

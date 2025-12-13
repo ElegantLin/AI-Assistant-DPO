@@ -1246,6 +1246,7 @@ class DPOTrainer(Trainer):
         reference_chosen_logps: torch.FloatTensor,
         reference_rejected_logps: torch.FloatTensor,
         label_smoothing: torch.FloatTensor = None,
+        ropo_alpha: Optional[float] = None,
     ) -> Tuple[torch.FloatTensor, torch.FloatTensor, torch.FloatTensor]:
         """Compute the DPO loss for a batch of policy and reference model log probabilities.
 
@@ -1254,6 +1255,8 @@ class DPOTrainer(Trainer):
             policy_rejected_logps: Log probabilities of the policy model for the rejected responses. Shape: (batch_size,)
             reference_chosen_logps: Log probabilities of the reference model for the chosen responses. Shape: (batch_size,)
             reference_rejected_logps: Log probabilities of the reference model for the rejected responses. Shape: (batch_size,)
+            label_smoothing: Label smoothing parameter for the loss.
+            ropo_alpha: The alpha parameter used in ROPO loss calculation. If None, uses self.args.ropo_alpha.
 
         Returns:
             A tuple of three tensors: (losses, chosen_rewards, rejected_rewards).
@@ -1335,15 +1338,19 @@ class DPOTrainer(Trainer):
                     - F.logsigmoid(-self.beta * logits) * 0.0
                 )
         elif self.loss_type == "ropo":
+            # Use parameter if provided, otherwise fall back to config
+            alpha_val = ropo_alpha if ropo_alpha is not None else self.args.ropo_alpha
             losses = (
-                F.sigmoid(-self.beta * logits) * 4 * 14 * 14 / 15 / 15
-                - F.logsigmoid(self.beta * logits) * 4 * 14 / 15 / 15
+                F.sigmoid(-self.beta * logits) * 4 * alpha_val * alpha_val / 15 / 15
+                - F.logsigmoid(self.beta * logits) * 4 * alpha_val / 15 / 15
             )
             losses_ori = -F.logsigmoid(self.beta * logits)
         elif self.loss_type == "ropo_log":
+            # Use parameter if provided, otherwise fall back to config
+            alpha_val = ropo_alpha if ropo_alpha is not None else self.args.ropo_alpha
             losses = (
-                F.logsigmoid(-self.beta * logits) * 4 * 14 * 14 / 15 / 15
-                - F.logsigmoid(self.beta * logits) * 4 * 14 / 15 / 15
+                F.logsigmoid(-self.beta * logits) * 4 * alpha_val * alpha_val / 15 / 15
+                - F.logsigmoid(self.beta * logits) * 4 * alpha_val / 15 / 15
             )
             losses_ori = -F.logsigmoid(self.beta * logits)
         elif self.loss_type == "robust":

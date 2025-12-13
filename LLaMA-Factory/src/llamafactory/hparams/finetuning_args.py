@@ -257,6 +257,10 @@ class RLHFArguments:
             )
         },
     )
+    ropo_alpha: float = field(
+        default=14.0,
+        metadata={"help": "The alpha parameter used in ROPO loss calculation. This parameter controls the scaling factor in the ROPO loss function."},
+    )
 
 
 @dataclass

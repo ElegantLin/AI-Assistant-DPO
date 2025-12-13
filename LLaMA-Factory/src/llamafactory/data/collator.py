@@ -273,9 +273,11 @@ class PairwiseDataCollatorWithPadding(MultiModalDataCollatorForSeq2Seq):
                     "videos": feature["videos"],
                     "audios": feature["audios"],
                 }
-                if "label_smoothing" in feature:
-                    target_feature["label_smoothing"] = feature["label_smoothing"]
-                concatenated_features.append(target_feature)
+            if "label_smoothing" in feature:
+                target_feature["label_smoothing"] = feature["label_smoothing"]
+            if "ropo_alpha" in feature:
+                target_feature["ropo_alpha"] = feature["ropo_alpha"]
+            concatenated_features.append(target_feature)
 
         return super().__call__(concatenated_features)
 

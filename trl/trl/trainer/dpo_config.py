@@ -90,6 +90,8 @@ class DPOConfig(TrainingArguments):
             The tau parameter from the [TR-DPO](https://arxiv.org/pdf/2404.09656) paper.
         rpo_alpha ('float', defaults to `None`):
             The alpha parameter from the [RPO](https://arxiv.org/pdf/2404.19733) paper. If None, no weighting is applied and the loss is the same as the DPO loss.
+        ropo_alpha ('float', defaults to 14.0):
+            The alpha parameter used in ROPO loss calculation. This parameter controls the scaling factor in the ROPO loss function.
     """
 
     beta: float = 0.1
@@ -120,6 +122,7 @@ class DPOConfig(TrainingArguments):
     ref_model_mixup_alpha: float = 0.9
     ref_model_sync_steps: int = 64
     rpo_alpha: Optional[float] = None
+    ropo_alpha: float = 14.0
 
     def __post_init__(self):
         if self.loss_type == "kto_pair":

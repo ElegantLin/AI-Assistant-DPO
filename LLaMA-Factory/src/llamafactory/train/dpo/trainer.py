@@ -82,6 +82,7 @@ class CustomDPOTrainer(DPOTrainer):
         self.label_smoothing = finetuning_args.dpo_label_smoothing
         self.simpo_gamma = finetuning_args.simpo_gamma
         self.ld_alpha = finetuning_args.ld_alpha
+        self.ropo_alpha = finetuning_args.ropo_alpha
 
         Trainer.__init__(self, model=model, **kwargs)
         self.model_accepts_loss_kwargs = False  # overwrite trainer's default behavior
@@ -183,7 +184,8 @@ class CustomDPOTrainer(DPOTrainer):
         reference_chosen_logps: Optional["torch.Tensor"],
         reference_rejected_logps: Optional["torch.Tensor"],
         label_smoothing: Optional["torch.Tensor"] = None,
-    ) -> tuple["torch.Tensor", "torch.Tensor", "torch.Tensor"]:
+        ropo_alpha: Optional["torch.Tensor"] = None,
+    ) -> tuple["torch.Tensor", "torch.Tensor", "torch.Tensor", "torch.Tensor"]:
         r"""Compute loss for preference learning."""
         if not self.finetuning_args.use_ref_model:
             if self.loss_type == "orpo":
@@ -196,8 +198,11 @@ class CustomDPOTrainer(DPOTrainer):
             chosen_rewards = self.beta * policy_chosen_logps.to(self.accelerator.device).detach()
             rejected_rewards = self.beta * policy_rejected_logps.to(self.accelerator.device).detach()
         else:
+            # Use per-sample ropo_alpha if available, otherwise use global default
+            ropo_alpha_value = ropo_alpha if ropo_alpha is not None else self.ropo_alpha
             losses, chosen_rewards, rejected_rewards, losses_ori = self.dpo_loss(
                 policy_chosen_logps, policy_rejected_logps, reference_chosen_logps, reference_rejected_logps, label_smoothing,
+                ropo_alpha=ropo_alpha_value,
             )
 
             if self.bco_gemma > 1e-6:
@@ -280,12 +285,19 @@ class CustomDPOTrainer(DPOTrainer):
         if label_smoothing is not None:
             batch_size = batch["input_ids"].size(0) // 2
             label_smoothing = label_smoothing[:batch_size]
+        
+        ropo_alpha = batch.get("ropo_alpha", None)
+        if ropo_alpha is not None:
+            batch_size = batch["input_ids"].size(0) // 2
+            ropo_alpha = ropo_alpha[:batch_size]
+        
         losses, chosen_rewards, rejected_rewards, losses_ori = self.compute_preference_loss(
             policy_chosen_logps,
             policy_rejected_logps,
             reference_chosen_logps,
             reference_rejected_logps,
             label_smoothing,
+            ropo_alpha,
         )
         sft_loss = -policy_chosen_logps_avg
         if self.ftx_gamma > 1e-6:
