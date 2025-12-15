@@ -816,6 +816,86 @@
       "rejected": "rejected"
     }
   },
+  "UFB_clean_test": {
+    "file_name": "UFB_clean_test.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "UFB_clean_val": {
+    "file_name": "UFB_clean_val.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "UFB_clean_train": {
+    "file_name": "UFB_clean_train.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "UFB_clean_train_with_scores_0_3": {
+    "file_name": "UFB_clean_train_with_scores_0_3.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "UFB_clean_train_with_scores_0_4": {
+    "file_name": "UFB_clean_train_with_scores_0_4.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "UFB_clean_train_with_scores_all_flipped": {
+    "file_name": "UFB_clean_train_with_scores_all_flipped.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "UFB_clean_train_with_scores_0_3_all_flipped": {
+    "file_name": "UFB_clean_train_with_scores_0_3_all_flipped.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "UFB_clean_train_with_scores_0_4_all_flipped": {
+    "file_name": "UFB_clean_train_with_scores_0_4_all_flipped.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
   "dpo_mix_en": {
     "hf_hub_url": "llamafactory/DPO-En-Zh-20k",
     "subset": "en",
