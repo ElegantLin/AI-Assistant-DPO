@@ -85,10 +85,16 @@ def main():
     parser = argparse.ArgumentParser(description='Convert ultrafeedback_binarized_cleaned to DPO format')
     parser.add_argument('--output_train', type=str, default='data/dpo_ultrafeedback_train.json',
                         help='Output path for training data')
+    parser.add_argument('--output_val', type=str, default='data/dpo_ultrafeedback_val.json',
+                        help='Output path for validation data')
     parser.add_argument('--output_test', type=str, default='data/dpo_ultrafeedback_test.json',
                         help='Output path for test data')
+    parser.add_argument('--train_ratio', type=float, default=0.8,
+                        help='Ratio of train split from train_prefs (default: 0.8)')
     parser.add_argument('--max_samples', type=int, default=None,
                         help='Maximum number of samples to convert (for testing)')
+    parser.add_argument('--seed', type=int, default=42,
+                        help='Random seed for train/val split (default: 42)')
     
     args = parser.parse_args()
     
@@ -96,14 +102,26 @@ def main():
     
     # Load train_prefs split
     print("\nProcessing train_prefs split...")
-    train_dataset = load_dataset('allenai/ultrafeedback_binarized_cleaned', split='train_prefs')
+    train_prefs_dataset = load_dataset('allenai/ultrafeedback_binarized_cleaned', split='train_prefs')
     
     if args.max_samples:
-        train_dataset = train_dataset.select(range(min(args.max_samples, len(train_dataset))))
+        train_prefs_dataset = train_prefs_dataset.select(range(min(args.max_samples, len(train_prefs_dataset))))
     
-    print(f"Converting {len(train_dataset)} training examples...")
+    # Split train_prefs into train (80%) and val (20%)
+    print(f"\nSplitting {len(train_prefs_dataset)} examples into train ({args.train_ratio*100:.0f}%) and val ({(1-args.train_ratio)*100:.0f}%)...")
+    train_prefs_dataset = train_prefs_dataset.shuffle(seed=args.seed)
+    split_idx = int(len(train_prefs_dataset) * args.train_ratio)
+    
+    train_dataset = train_prefs_dataset.select(range(split_idx))
+    val_dataset = train_prefs_dataset.select(range(split_idx, len(train_prefs_dataset)))
+    
+    print(f"  Train set: {len(train_dataset)} examples")
+    print(f"  Val set: {len(val_dataset)} examples")
+    
+    # Convert training data
+    print(f"\nConverting training examples...")
     train_converted = []
-    for example in tqdm(train_dataset, desc="Converting train_prefs"):
+    for example in tqdm(train_dataset, desc="Converting train"):
         converted = convert_to_dpo_format(example)
         train_converted.append(converted)
     
@@ -112,6 +130,19 @@ def main():
     with open(args.output_train, 'w', encoding='utf-8') as f:
         json.dump(train_converted, f, indent=2, ensure_ascii=False)
     print(f"Saved {len(train_converted)} training examples")
+    
+    # Convert validation data
+    print(f"\nConverting validation examples...")
+    val_converted = []
+    for example in tqdm(val_dataset, desc="Converting val"):
+        converted = convert_to_dpo_format(example)
+        val_converted.append(converted)
+    
+    # Save validation data
+    print(f"\nSaving validation data to {args.output_val}...")
+    with open(args.output_val, 'w', encoding='utf-8') as f:
+        json.dump(val_converted, f, indent=2, ensure_ascii=False)
+    print(f"Saved {len(val_converted)} validation examples")
     
     # Load test_prefs split
     print("\nProcessing test_prefs split...")
@@ -122,7 +153,7 @@ def main():
     
     print(f"Converting {len(test_dataset)} test examples...")
     test_converted = []
-    for example in tqdm(test_dataset, desc="Converting test_prefs"):
+    for example in tqdm(test_dataset, desc="Converting test"):
         converted = convert_to_dpo_format(example)
         test_converted.append(converted)
     
@@ -134,6 +165,7 @@ def main():
     
     print("\n✓ Conversion complete!")
     print(f"  Training data: {args.output_train} ({len(train_converted)} examples)")
+    print(f"  Validation data: {args.output_val} ({len(val_converted)} examples)")
     print(f"  Test data: {args.output_test} ({len(test_converted)} examples)")
 
 
