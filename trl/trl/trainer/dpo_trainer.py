@@ -1340,17 +1340,23 @@ class DPOTrainer(Trainer):
         elif self.loss_type == "ropo":
             # Use parameter if provided, otherwise fall back to config
             alpha_val = ropo_alpha if ropo_alpha is not None else self.args.ropo_alpha
-            losses = (
-                F.sigmoid(-self.beta * logits) * 4 * alpha_val * alpha_val / 15 / 15
-                - F.logsigmoid(self.beta * logits) * 4 * alpha_val / 15 / 15
+            losses = F.sigmoid(-self.beta * logits) * 4 * alpha_val * alpha_val / (
+                alpha_val + 1
+            ) / (alpha_val + 1) - F.logsigmoid(self.beta * logits) * 4 * alpha_val / (
+                alpha_val + 1
+            ) / (
+                alpha_val + 1
             )
             losses_ori = -F.logsigmoid(self.beta * logits)
         elif self.loss_type == "ropo_log":
             # Use parameter if provided, otherwise fall back to config
             alpha_val = ropo_alpha if ropo_alpha is not None else self.args.ropo_alpha
-            losses = (
-                F.logsigmoid(-self.beta * logits) * 4 * alpha_val * alpha_val / 15 / 15
-                - F.logsigmoid(self.beta * logits) * 4 * alpha_val / 15 / 15
+            losses = F.logsigmoid(-self.beta * logits) * 4 * alpha_val * alpha_val / (
+                alpha_val + 1
+            ) / (alpha_val + 1) - F.logsigmoid(self.beta * logits) * 4 * alpha_val / (
+                alpha_val + 1
+            ) / (
+                alpha_val + 1
             )
             losses_ori = -F.logsigmoid(self.beta * logits)
         elif self.loss_type == "robust":
