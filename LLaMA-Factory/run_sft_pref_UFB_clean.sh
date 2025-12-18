@@ -180,12 +180,16 @@ run_preference_optimization() {
   echo "========================================"
   
   for lr in "${lrs[@]}"; do
+    # Generate timestamp right before training
+    local timestamp=$(date +%Y%m%d_%H%M%S)
+    
     lr_token=$(printf "%s" "$lr" | sed 's/\./p/g')
-    output_dir="saves/qwen2_5-${model_id}/full/${opt_method}/${pref_dataset}/lr_${lr_token}"
-    run_name="qwen2_5-${model_id}-full-${opt_method}-${pref_dataset}-lr-${lr_token}"
+    output_dir="saves/qwen2_5-${model_id}/full/${opt_method}/${pref_dataset}_${timestamp}/lr_${lr_token}"
+    run_name="qwen2_5-${model_id}-full-${opt_method}-${pref_dataset}-${timestamp}-lr-${lr_token}"
     
     echo "----------------------------------------"
     echo "${opt_method^^} iteration with learning_rate=$lr"
+    echo "Timestamp: $timestamp"
     echo "----------------------------------------"
     
     llamafactory-cli train "$config_file" \
@@ -204,7 +208,7 @@ run_preference_optimization() {
   echo ""
   echo "========================================"
   echo "${opt_method^^} stage completed!"
-  echo "Output directory: saves/qwen2_5-${model_id}/full/${opt_method}/${pref_dataset}/"
+  echo "Output directory: saves/qwen2_5-${model_id}/full/${opt_method}/${pref_dataset}_*/"
   echo "========================================"
 }
 
@@ -230,11 +234,11 @@ echo "Model: $model_name_or_path (${model_id})"
 echo "SFT output: $sft_output_dir"
 
 if [ "$method" = "dpo" ] || [ "$method" = "both" ]; then
-  echo "DPO outputs: saves/qwen2_5-${model_id}/full/dpo/${pref_dataset}/"
+  echo "DPO outputs: saves/qwen2_5-${model_id}/full/dpo/${pref_dataset}_*/"
 fi
 
 if [ "$method" = "ropo" ] || [ "$method" = "both" ]; then
-  echo "ROPO outputs: saves/qwen2_5-${model_id}/full/ropo/${pref_dataset}/"
+  echo "ROPO outputs: saves/qwen2_5-${model_id}/full/ropo/${pref_dataset}_*/"
 fi
 
 echo "========================================"
