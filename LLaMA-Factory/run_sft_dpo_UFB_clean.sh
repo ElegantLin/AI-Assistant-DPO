@@ -67,24 +67,24 @@ fi
 # Set batch sizes based on GPU count
 case $num_gpus in
   8)
-    sft_batch_size=8
+    sft_batch_size=4
     dpo_batch_size=1
     ;;
   4)
-    sft_batch_size=16
+    sft_batch_size=8
     dpo_batch_size=2
     ;;
   2)
-    sft_batch_size=32
+    sft_batch_size=16
     dpo_batch_size=4
     ;;
   1)
-    sft_batch_size=64
+    sft_batch_size=32
     dpo_batch_size=8
     ;;
   *)
     echo "Warning: Unsupported GPU count ($num_gpus), using defaults for 1 GPU"
-    sft_batch_size=8
+    sft_batch_size=4
     dpo_batch_size=1
     ;;
 esac
