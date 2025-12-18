@@ -2,8 +2,32 @@
   "identity": {
     "file_name": "identity.json"
   },
-  "alpaca_en_demo": {
-    "file_name": "alpaca_en_demo.json"
+  "UFB_clean_train_sft": {
+    "file_name": "UFB_clean_train_with_scores_sft.json"
+  },
+  "UFB_clean_val_sft": {
+    "file_name": "UFB_clean_val_with_scores_sft.json"
+  },
+  "UFB_clean_test_sft": {
+    "file_name": "UFB_clean_test_with_scores_sft.json"
+  },
+  "UFB_clean_train_with_scores_sft": {
+    "file_name": "UFB_clean_train_with_scores_sft.json"
+  },
+  "UFB_clean_train_with_scores_0_3_sft": {
+    "file_name": "UFB_clean_train_with_scores_0_3_sft.json"
+  },
+  "UFB_clean_train_with_scores_0_4_sft": {
+    "file_name": "UFB_clean_train_with_scores_0_4_sft.json"
+  },
+  "UFB_clean_train_with_scores_all_flipped_sft": {
+    "file_name": "UFB_clean_train_with_scores_all_flipped_sft.json"
+  },
+  "UFB_clean_train_with_scores_0_3_all_flipped_sft": {
+    "file_name": "UFB_clean_train_with_scores_0_3_all_flipped_sft.json"
+  },
+  "UFB_clean_train_with_scores_0_4_all_flipped_sft": {
+    "file_name": "UFB_clean_train_with_scores_0_4_all_flipped_sft.json"
   },
   "alpaca_zh_demo": {
     "file_name": "alpaca_zh_demo.json"
