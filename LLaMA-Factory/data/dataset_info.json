@@ -29,6 +29,15 @@
   "UFB_clean_train_with_scores_0_4_all_flipped_sft": {
     "file_name": "UFB_clean_train_with_scores_0_4_all_flipped_sft.json"
   },
+  "UFB_clean_train_artificial_flipped_0_2_sft": {
+    "file_name": "UFB_clean_train_artificial_flipped_0_2_sft.json"
+  },
+  "UFB_clean_train_artificial_flipped_0_3_sft": {
+    "file_name": "UFB_clean_train_artificial_flipped_0_3_sft.json"
+  },
+  "UFB_clean_train_artificial_flipped_0_4_sft": {
+    "file_name": "UFB_clean_train_artificial_flipped_0_4_sft.json"
+  },
   "alpaca_zh_demo": {
     "file_name": "alpaca_zh_demo.json"
   },
@@ -912,6 +921,36 @@
   },
   "UFB_clean_train_with_scores_0_4_all_flipped": {
     "file_name": "UFB_clean_train_with_scores_0_4_all_flipped.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "UFB_clean_train_artificial_flipped_0_2": {
+    "file_name": "UFB_clean_train_artificial_flipped_0_2.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "UFB_clean_train_artificial_flipped_0_3": {
+    "file_name": "UFB_clean_train_artificial_flipped_0_3.json",
+    "ranking": true,
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "UFB_clean_train_artificial_flipped_0_4": {
+    "file_name": "UFB_clean_train_artificial_flipped_0_4.json",
     "ranking": true,
     "formatting": "sharegpt",
     "columns": {
